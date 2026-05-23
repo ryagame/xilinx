@@ -1,0 +1,20 @@
+name: VHDL Simulation
+
+on: [push, pull_request]
+
+jobs:
+  simulate:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Install GHDL
+      run: sudo apt-get update && sudo apt-get install -y ghdl
+
+    - name: Run Simulation
+      run: |
+        ghdl -a gerbang.vhd
+        ghdl -a tb_gerbang.vhd
+        ghdl -e tb_gerbang
+        ghdl -r tb_gerbang --assert-level=none
